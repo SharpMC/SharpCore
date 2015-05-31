@@ -69,5 +69,24 @@ namespace SharpCore
             }
             _context.LevelManager.MainLevel.SaveChunks();
         }
+
+        [Command(Command = "gamemode")]
+        public void Gamemode(Player player, int gamemode)
+        {
+            switch (gamemode)
+            {
+                case 0:
+                    player.SetGamemode(SharpMC.Enums.Gamemode.Adventure);
+                    break;
+                case 1:
+                    player.SetGamemode(SharpMC.Enums.Gamemode.Adventure);
+                    break;
+                case 2:
+                    player.SetGamemode(SharpMC.Enums.Gamemode.Adventure);
+                    break;
+            }
+
+
+        }
     }
 }
