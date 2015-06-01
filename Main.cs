@@ -76,17 +76,15 @@ namespace SharpCore
             switch (gamemode)
             {
                 case 0:
-                    player.SetGamemode(SharpMC.Enums.Gamemode.Adventure);
+                    player.SetGamemode(SharpMC.Enums.Gamemode.Surival);
                     break;
                 case 1:
-                    player.SetGamemode(SharpMC.Enums.Gamemode.Adventure);
+                    player.SetGamemode(SharpMC.Enums.Gamemode.Creative);
                     break;
                 case 2:
                     player.SetGamemode(SharpMC.Enums.Gamemode.Adventure);
                     break;
             }
-
-
         }
     }
 }
