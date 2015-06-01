@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpMC.API;
 using SharpMC.Entity;
+using SharpMC;
 
 namespace SharpCore
 {
@@ -85,6 +86,12 @@ namespace SharpCore
                     player.SetGamemode(SharpMC.Enums.Gamemode.Adventure);
                     break;
             }
+        }
+
+        [Command(Command = "stopserver")]
+        public void StopServer(Player player, string message)
+        {
+            Globals.StopServer(message);
         }
     }
 }
