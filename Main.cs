@@ -109,5 +109,17 @@ namespace SharpCore
             player.Level.SetWorldTime(time);
             player.SendChat("Time set to: " + time);
         }
+
+        [Command(Command = "rain")]
+        public void Rain(Player player)
+        {
+            player.Level.timetorain = 0;
+        }
+
+        [Command(Command = "raintime", Description = "Set time until next rain or length of current rain")]
+        public void Rain(Player player, int time)
+        {
+            player.Level.timetorain = time;
+        }
     }
 }
