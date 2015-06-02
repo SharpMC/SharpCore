@@ -96,5 +96,18 @@ namespace SharpCore
         {
             Globals.StopServer(message);
         }
+
+        [Command(Command = "time")]
+        public void Time(Player player)
+        {
+            player.SendChat(player.Level.GetWorldTime().ToString());
+        }
+
+        [Command(Command = "settime")]
+        public void SetTime(Player player, int time)
+        {
+            player.Level.SetWorldTime(time);
+            player.SendChat("Time set to: " + time);
+        }
     }
 }
