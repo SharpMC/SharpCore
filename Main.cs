@@ -2,6 +2,7 @@
 using SharpMC.API;
 using SharpMC.Entity;
 using SharpMC;
+using SharpMC.Networking.Packages;
 
 namespace SharpCore
 {
@@ -151,6 +152,16 @@ namespace SharpCore
         {
             Globals.BroadcastChat(message, player);
             player.SendChat("Message sent to all players!");
+        }
+
+        [Command(Command = "kick")]
+        public void Kick(Player player, Player target, string message = "You got da boot!")
+        {
+            target.SavePlayer();
+            new Disconnect(target.Wrapper)
+            {
+                Reason = "You have been kicked! Reason: " + message
+            }.Write();
         }
     }
 }
