@@ -121,5 +121,12 @@ namespace SharpCore
         {
             player.Level.timetorain = time;
         }
+
+        [Command(Command = "msg")]
+        public void Msg(Player player, Player target, string message)
+        {
+            target.SendChat(player.Username + ": " + message);
+            player.SendChat("Message sent to: " + target.Username);
+        }
     }
 }
