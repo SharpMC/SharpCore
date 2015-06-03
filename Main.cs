@@ -128,5 +128,29 @@ namespace SharpCore
             target.SendChat(player.Username + ": " + message);
             player.SendChat("Message sent to: " + target.Username);
         }
+
+        [Command(Command = "tp")]
+        public void Tp(Player player, Player target, Player target2 = null)
+        {
+            if(target2 != null)
+            {
+                target.PositionChanged(target2.KnownPosition.ToVector3(), target2.KnownPosition.Yaw);
+                player.SendChat("Teleported " + target.Username + "to: " + target2.Username);
+                target.SendChat("You've been teleported to: " + target2.Username);
+            }
+            else
+            {
+                player.PositionChanged(target.KnownPosition.ToVector3(), target.KnownPosition.Yaw);
+                player.SendChat("Teleported you to: " + target.Username);
+
+            }   
+        }
+
+        [Command(Command = "say")]
+        public void Say(Player player, string message)
+        {
+            Globals.BroadcastChat(message, player);
+            player.SendChat("Message sent to all players!");
+        }
     }
 }
