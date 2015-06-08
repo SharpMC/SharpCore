@@ -11,22 +11,22 @@ Current Features
 List of Commands & Permissions
 ------------------------------
 
-| Command               | Permission                      |
-|-----------------------|---------------------------------|
-| /world                | Core.World                      |
-| /tnt                  | Core.TNT                        |
-| /tps                  | Core.Tps                        |
-| /save-all             | Core.Save                       |
-| /gamemode             | Core.Gamemode                   |
-| /stopserver           | Core.StopServer                 |
-| /time                 | Core.Time                       |
-| /settime              | Core.Time                       |
-| /rain                 | Core.Rain                       |
-| /msg                  | Core.Msg                        |
-| /tp                   | Core.TP                         |
-| /me                   | Core.Me                         |
-| /broadcast            | Core.Broadcast                  |
-| /kick                 | Core.Kick                       |
+| Command               | Permission                      | Description                                     |
+|-----------------------|---------------------------------|-------------------------------------------------|
+| /world                | Core.World                      | Teleport between worlds.                        |
+| /tnt                  | Core.TNT                        | Spawn an active TNT entity.                     |
+| /tps                  | Core.Tps                        | Get the current server TPS.                     |
+| /save-all             | Core.Save                       | Save all chunks.                                |
+| /gamemode             | Core.Gamemode                   | Change player gamemode.                         |
+| /stopserver           | Core.StopServer                 | Stops the server.                               |
+| /time                 | Core.Time                       | Gets the current time.                          |
+| /settime              | Core.Time                       | Allows you to set the current time.             |
+| /toggledownfall       | Core.Toggledownfall             | Toggles downfall                                |
+| /msg                  | Core.Msg                        | Message a player,                               |
+| /tp                   | Core.TP                         | Teleports a player to another player.           |
+| /me                   | Core.Me                         | Says something in the third person perspective. |
+| /broadcast            | Core.Broadcast                  | Broadcasts a message to all players.            |
+| /kick                 | Core.Kick                       | Allows the kicking of a player.                 |
 
 Licensing
 ----------
