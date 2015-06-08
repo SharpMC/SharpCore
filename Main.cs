@@ -1,25 +1,50 @@
-﻿using System;
-using SharpMC.API;
-using SharpMC.Entity;
-using SharpMC;
-using SharpMC.Networking.Packages;
+﻿#region Header
+
+// Distrubuted under the MIT license
+// ===================================================
+// SharpMC uses the permissive MIT license.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the “Software”), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software
+// THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+// ©Copyright Kenny van Vulpen - 2015
+
+#endregion
 
 namespace SharpCore
 {
-    [Plugin]
+    using System;
+    using System.Linq;
+
+    using SharpMC;
+    using SharpMC.API;
+    using SharpMC.Entity;
+
     public class Main : IPlugin
     {
         private PluginContext _context;
+
         public void OnEnable(PluginContext context)
         {
-            _context = context;
+            this._context = context;
         }
 
         public void OnDisable()
         {
-
         }
 
+        [Permission(Permission = "Core.World")]
         [Command(Command = "world")]
         public void WorldCommand(Player player, string world)
         {
@@ -27,11 +52,11 @@ namespace SharpCore
             {
                 case "overworld":
                     player.SendChat("Teleporting you to the Overworld!");
-                    _context.LevelManager.TeleportToMain(player);
+                    this._context.LevelManager.TeleportToMain(player);
                     break;
                 case "nether":
                     player.SendChat("Teleporting you to the Nether!");
-                    _context.LevelManager.TeleportToLevel(player, "nether");
+                    this._context.LevelManager.TeleportToLevel(player, "nether");
                     break;
                 default:
                     player.SendChat("Unknown world! Choices: overworld, nether");
@@ -39,39 +64,35 @@ namespace SharpCore
             }
         }
 
+        [Permission(Permission = "Core.TNT")]
         [Command(Command = "tnt")]
         public void TntCommand(Player player)
         {
             var rand = new Random();
-            new ActivatedTNTEntity(player.Level)
-            {
-                KnownPosition = player.KnownPosition,
-                Fuse = (rand.Next(0, 20) + 10)
-            }.SpawnEntity();
+            new ActivatedTNTEntity(player.Level) { KnownPosition = player.KnownPosition, Fuse = rand.Next(0, 20) + 10 }
+                .SpawnEntity();
         }
 
+        [Permission(Permission = "Core.Tps")]
         [Command(Command = "TPS")]
         public void TpsCommand(Player player)
         {
-            _context.LevelManager.MainLevel.CalculateTps(player);
+            this._context.LevelManager.MainLevel.CalculateTps(player);
         }
 
-        [Command]
-        public void Hello(Player player)
-        {
-            player.SendChat("Hello there!");
-        }
-
+        [Permission(Permission = "Core.Save")]
         [Command(Command = "save-all")]
         public void SaveAllCommand(Player player)
         {
-            foreach (var lvl in _context.LevelManager.GetLevels())
+            foreach (var lvl in this._context.LevelManager.GetLevels())
             {
                 lvl.SaveChunks();
             }
-            _context.LevelManager.MainLevel.SaveChunks();
+
+            this._context.LevelManager.MainLevel.SaveChunks();
         }
 
+        [Permission(Permission = "Core.Gamemode")]
         [Command(Command = "gamemode")]
         public void Gamemode(Player player, int gamemode)
         {
@@ -92,18 +113,21 @@ namespace SharpCore
             }
         }
 
+        [Permission(Permission = "Core.StopServer")]
         [Command(Command = "stopserver")]
         public void StopServer(Player player, string message)
         {
             Globals.StopServer(message);
         }
 
+        [Permission(Permission = "Core.Time")]
         [Command(Command = "time")]
         public void Time(Player player)
         {
             player.SendChat(player.Level.GetWorldTime().ToString());
         }
 
+        [Permission(Permission = "Core.Time")]
         [Command(Command = "settime")]
         public void SetTime(Player player, int time)
         {
@@ -111,18 +135,21 @@ namespace SharpCore
             player.SendChat("Time set to: " + time);
         }
 
+        [Permission(Permission = "Core.Rain")]
         [Command(Command = "rain")]
         public void Rain(Player player)
         {
             player.Level.timetorain = 0;
         }
 
+        [Permission(Permission = "Core.Rain")]
         [Command(Command = "raintime", Description = "Set time until next rain or length of current rain")]
         public void Rain(Player player, int time)
         {
             player.Level.timetorain = time;
         }
 
+        [Permission(Permission = "Core.Msg")]
         [Command(Command = "msg")]
         public void Msg(Player player, Player target, string message)
         {
@@ -130,10 +157,11 @@ namespace SharpCore
             player.SendChat("Message sent to: " + target.Username);
         }
 
+        [Permission(Permission = "Core.TP")]
         [Command(Command = "tp")]
         public void Tp(Player player, Player target, Player target2 = null)
         {
-            if(target2 != null)
+            if (target2 != null)
             {
                 target.PositionChanged(target2.KnownPosition.ToVector3(), target2.KnownPosition.Yaw);
                 player.SendChat("Teleported " + target.Username + "to: " + target2.Username);
@@ -143,25 +171,32 @@ namespace SharpCore
             {
                 player.PositionChanged(target.KnownPosition.ToVector3(), target.KnownPosition.Yaw);
                 player.SendChat("Teleported you to: " + target.Username);
-
-            }   
+            }
         }
 
-        [Command(Command = "say")]
-        public void Say(Player player, string message)
+        [Permission(Permission = "Core.Me")]
+        [Command(Command = "me")]
+        public void Me(Player player, string[] message)
         {
-            Globals.BroadcastChat(message, player);
-            player.SendChat("Message sent to all players!");
+            string fullMsg = "§5* §6" + player.Username + "§5 " + message.Aggregate("", (current, i) => current + (i + " "));
+            Globals.BroadcastChat(fullMsg, player);
+            player.SendChat(fullMsg);
         }
 
+        [Permission(Permission = "Core.Broadcast")]
+        [Command(Command = "broadcast")]
+        public void Broadcast(Player player, string[] message)
+        {
+            string fullMsg = "<" + player.Username + "> " + message.Aggregate("", (current, i) => current + (i + " "));
+            Globals.BroadcastChat(fullMsg, player);
+            player.SendChat(fullMsg);
+        }
+
+        [Permission(Permission = "Core.Kick")]
         [Command(Command = "kick")]
         public void Kick(Player player, Player target, string message = "You got da boot!")
         {
-            target.SavePlayer();
-            new Disconnect(target.Wrapper)
-            {
-                Reason = "You have been kicked! Reason: " + message
-            }.Write();
+            target.Kick(message);
         }
     }
 }

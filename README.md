@@ -6,7 +6,27 @@ SharpCore is the main plugin for SharpMC which provides the basic most basic com
 
 Current Features
 -----------------
-  - Nada
+  - See commands below
+
+List of Commands & Permissions
+------------------------------
+
+| Command               | Permission                      |
+|-----------------------|---------------------------------|
+| /world                | Core.World                      |
+| /tnt                  | Core.TNT                        |
+| /tps                  | Core.Tps                        |
+| /save-all             | Core.Save                       |
+| /gamemode             | Core.Gamemode                   |
+| /stopserver           | Core.StopServer                 |
+| /time                 | Core.Time                       |
+| /settime              | Core.Time                       |
+| /rain                 | Core.Rain                       |
+| /msg                  | Core.Msg                        |
+| /tp                   | Core.TP                         |
+| /me                   | Core.Me                         |
+| /broadcast            | Core.Broadcast                  |
+| /kick                 | Core.Kick                       |
 
 Licensing
 ----------
