@@ -22,14 +22,16 @@
 
 #endregion
 
+using SharpMC.Core.Enums;
+
 namespace SharpCore
 {
     using System;
     using System.Linq;
 
-    using SharpMC;
-    using SharpMC.API;
-    using SharpMC.Entity;
+    using SharpMC.Core;
+    using SharpMC.Core.API;
+    using SharpMC.Core.Entity;
 
     public class Main : IPlugin
     {
@@ -69,7 +71,7 @@ namespace SharpCore
         public void TntCommand(Player player)
         {
             var rand = new Random();
-            new ActivatedTNTEntity(player.Level) { KnownPosition = player.KnownPosition, Fuse = rand.Next(0, 20) + 10 }
+            new ActivatedTntEntity(player.Level) { KnownPosition = player.KnownPosition, Fuse = rand.Next(0, 20) + 10 }
                 .SpawnEntity();
         }
 
@@ -99,16 +101,16 @@ namespace SharpCore
             switch (gamemode)
             {
                 case 0:
-                    player.SetGamemode(SharpMC.Enums.Gamemode.Survival);
+                    player.SetGamemode(SharpMC.Core.Enums.Gamemode.Survival);
                     break;
                 case 1:
-                    player.SetGamemode(SharpMC.Enums.Gamemode.Creative);
+                    player.SetGamemode(SharpMC.Core.Enums.Gamemode.Creative);
                     break;
                 case 2:
-                    player.SetGamemode(SharpMC.Enums.Gamemode.Adventure);
+					player.SetGamemode(SharpMC.Core.Enums.Gamemode.Adventure);
                     break;
                 case 3:
-                    player.SetGamemode(SharpMC.Enums.Gamemode.Spectator);
+					player.SetGamemode(SharpMC.Core.Enums.Gamemode.Spectator);
                     break;
             }
         }
@@ -139,14 +141,14 @@ namespace SharpCore
         [Command(Command = "rain")]
         public void Rain(Player player)
         {
-            player.Level.timetorain = 0;
+            player.Level.Timetorain = 0;
         }
 
         [Permission(Permission = "Core.Rain")]
         [Command(Command = "raintime", Description = "Set time until next rain or length of current rain")]
         public void Rain(Player player, int time)
         {
-            player.Level.timetorain = time;
+	        player.Level.Timetorain = time;
         }
 
         [Permission(Permission = "Core.Msg")]
@@ -198,5 +200,21 @@ namespace SharpCore
         {
             target.Kick(message);
         }
+
+		[Permission(Permission = "Core.Op")]
+		[Command(Command = "op")]
+	    public void Op(Player player, Player target)
+		{
+			if (target.ToggleOperatorStatus())
+			{
+				target.SendChat("You are now an Operator!", ChatColor.Yellow);
+				player.SendChat(String.Format("Player \"{0}\" is now an Operator!", target.Username), ChatColor.Yellow);
+			}
+			else
+			{
+				target.SendChat("You have been De-Opped!", ChatColor.Yellow);
+				player.SendChat(String.Format("Player \"{0}\" has been De-Opped!", target.Username), ChatColor.Yellow);
+			}
+		}
     }
 }

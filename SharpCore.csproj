@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpMC">
-      <HintPath>.\SharpMC.exe</HintPath>
+    <Reference Include="SharpMC.Core">
+      <HintPath>.\SharpMC.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
